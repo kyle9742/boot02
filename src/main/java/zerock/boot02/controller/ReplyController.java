@@ -1,13 +1,10 @@
 package zerock.boot02.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +34,7 @@ public class ReplyController {
         }
 
         Map<String, Long> resultMap = new HashMap<>();
-
         Long rno = replyService.register(replyDTO);
-
         resultMap.put("rno", rno);
 
         return resultMap;

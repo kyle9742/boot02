@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
-    <sccript th:src="@{/js/script.js}">이거 뭐임?</sccript>
+
 </head>
 <body>
 <div class="d-flex" id="wrapper">
@@ -64,9 +64,10 @@
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/scripts.js}"></script>
 <th:block layout:fragment="script">
-    <script th:src="@{/js/scripts.js}"></script>
+
 </th:block>
 </body>
 </html>
