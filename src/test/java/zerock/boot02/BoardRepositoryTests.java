@@ -4,6 +4,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import zerock.boot02.domain.Board;
 import zerock.boot02.domain.BoardImage;
+import zerock.boot02.dto.BoardListAllDTO;
 import zerock.boot02.dto.BoardListReplyCountDTO;
 import zerock.boot02.repository.BoardRepository;
 import lombok.extern.log4j.Log4j2;
@@ -208,5 +209,19 @@ public class BoardRepositoryTests {
             }
             boardRepository.save(board);
         }
+    }
+
+    @Transactional
+    @Test
+    public void testSearchImageReplyCount() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+//        boardRepository.searchWithAll(null, null, pageable);
+
+        Page<BoardListAllDTO> result = boardRepository.searchWithAll(null, null, pageable);
+
+        log.info("----------------------------------");
+        log.info(result.getTotalElements());
+
+        result.getContent().forEach(boardListAllDTO -> log.info(boardListAllDTO));
     }
 }

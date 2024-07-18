@@ -1,10 +1,7 @@
 package zerock.boot02.service;
 
 import zerock.boot02.domain.Board;
-import zerock.boot02.dto.BoardDTO;
-import zerock.boot02.dto.BoardListReplyCountDTO;
-import zerock.boot02.dto.PageRequestDTO;
-import zerock.boot02.dto.PageResponseDTO;
+import zerock.boot02.dto.*;
 import zerock.boot02.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +28,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Long register(BoardDTO boardDTO) {
 
-        Board board = modelMapper.map(boardDTO, Board.class);
+        Board board = dtoToEntity(boardDTO);
+
         Long bno = boardRepository.save(board).getBno();
 
         return bno;
@@ -39,18 +37,34 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDTO readOne(Long bno) {
-        Optional<Board> result = boardRepository.findById(bno);
+
+        Optional<Board> result = boardRepository.findByIDWithImages(bno);
+
         Board board = result.orElseThrow();
-        BoardDTO dto = modelMapper.map(board, BoardDTO.class);
+
+        BoardDTO dto = entityToDto(board);
 
         return dto;
     }
 
     @Override
     public void modify(BoardDTO boardDTO) {
+
         Optional<Board> result = boardRepository.findById(boardDTO.getBno());
+
         Board board = result.orElseThrow();
+
         board.change(boardDTO.getTitle(), boardDTO.getContent());
+
+        board.clearImages();
+
+        if(boardDTO.getFileNames() != null){
+            for(String fileName : boardDTO.getFileNames()){
+                String[] arr = fileName.split("_");
+                board.addImage(arr[0], arr[1]);
+            }
+        }
+
         boardRepository.save(board);
 
     }
@@ -92,6 +106,21 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardListReplyCountDTO> result = boardRepository.searchWithReplyCount(types, keyword, pageable);
 
         return PageResponseDTO.<BoardListReplyCountDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(result.getContent())
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<BoardListAllDTO> listWithAll(PageRequestDTO pageRequestDTO) {
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+
+        Page<BoardListAllDTO> result = boardRepository.searchWithAll(types, keyword, pageable);
+
+        return PageResponseDTO.<BoardListAllDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(result.getContent())
                 .total((int)result.getTotalElements())
