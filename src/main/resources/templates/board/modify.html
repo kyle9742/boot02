@@ -55,7 +55,9 @@
 
                         <div class="my-4">
                             <div class="float-end">
-                                <button type="button" class="btn btn-primary">List</button>
+                                <a th:href="|@{/board/list}?${link}|" class="text-decoration-none">
+                                    <button type="button" class="btn btn-primary">List</button>
+                                </a>
                                 <button type="button" class="btn btn-secondary modBtn">Modify</button>
                                 <button type="button" class="btn btn-danger removeBtn">Remove</button>
                             </div>
@@ -236,7 +238,7 @@
 
         formObj.action = `/board/remove`;
         formObj.method = 'post';
-        //formObj.submit();
+        formObj.submit();
     }, false);
 
     function appendNotShownData() {
