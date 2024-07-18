@@ -1,5 +1,8 @@
 package zerock.boot02.controller;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import zerock.boot02.domain.Board;
 import zerock.boot02.dto.*;
 import zerock.boot02.service.BoardService;
@@ -16,13 +19,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import zerock.boot02.dto.BoardDTO;
 import zerock.boot02.dto.PageRequestDTO;
 import zerock.boot02.dto.PageResponseDTO;
-import zerock.boot02.service.BoardService;
+
+
+import java.io.File;
+import java.nio.file.Files;
+import java.util.List;
 
 @Controller
 @RequestMapping("/board")
 @Log4j2
 @RequiredArgsConstructor
 public class BoardController {
+
+    @Value("${com.mysite.upload.path}")
+    private String uploadPath;
 
     private final BoardService boardService;
 
@@ -31,7 +41,7 @@ public class BoardController {
 
 //        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
 
-        PageResponseDTO<BoardListReplyCountDTO> responseDTO = boardService.listWithReplyCount(pageRequestDTO);
+        PageResponseDTO<BoardListAllDTO> responseDTO = boardService.listWithAll(pageRequestDTO);
 
         log.info(responseDTO);
 
@@ -101,12 +111,39 @@ public class BoardController {
     }
 
     @PostMapping("/remove")
-    public String remove(Long bno, RedirectAttributes redirectAttributes) {
+    public String remove(BoardDTO boardDTO, RedirectAttributes redirectAttributes){
+
+        Long bno = boardDTO.getBno();
+        log.info("remove post......" + bno);
 
         boardService.delete(bno);
+
+        log.info(boardDTO.getFileNames());
+        List<String> fileNames = boardDTO.getFileNames();
+        if(fileNames != null && fileNames.size() > 0){
+            removeFiles(fileNames);
+        }
 
         redirectAttributes.addFlashAttribute("result", "removed");
 
         return "redirect:/board/list";
+    }
+
+    public void removeFiles(List<String> files){
+        for(String fileName : files){
+            Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
+            String resourceName = resource.getFilename();
+
+            try{
+                String contentType = Files.probeContentType(resource.getFile().toPath());
+                resource.getFile().delete();
+                if(contentType.startsWith("image")){
+                    File thumbnailFile = new File(uploadPath + File.separator + "s_" + fileName);
+                    thumbnailFile.delete();
+                }
+            } catch(Exception e){
+                log.error(e.getMessage());
+            }
+        }
     }
 }

@@ -55,6 +55,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="card" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
+                    <img class="card-img-top" th:each ="fileName: ${dto.fileNames}" th:src="|/view/${fileName}|">
+                </div>
             </div>
         </div>
     </div>
@@ -211,16 +214,16 @@
     registerBtn.addEventListener("click", function (e) {
 
         const replyObj = {
-            bno:bno,
-            replyText:replyText.value,
-            replyer:replyer.value
+            bno: bno,
+            replyText: replyText.value,
+            replyer: replyer.value
         }
         addReply(replyObj).then(result => {
             alert(result.rno)
             registerModal.hide()
             replyText.value = ''
             replyer.value = ''
-            printReplies(1,10, true)
+            printReplies(1, 10, true)
         }).catch(e => {
             alert("Exception...")
         })
@@ -236,7 +239,7 @@
 
         const target = e.target;
 
-        if(!target || target.tagName != 'A') {
+        if (!target || target.tagName != 'A') {
             return
         }
 
@@ -259,7 +262,7 @@
 
         const target = e.target;
 
-        if(!target || target.tagName != 'SPAN') {
+        if (!target || target.tagName != 'SPAN') {
             return;
         }
 
@@ -283,9 +286,9 @@
     modifyBtn.addEventListener("click", function (e) {
 
         const replyObj = {
-            bno:bno,
-            rno:replyHeader.innerHTML,
-            replyText:modifyText.value
+            bno: bno,
+            rno: replyHeader.innerHTML,
+            replyText: modifyText.value
         }
 
         modifyReply(replyObj).then(result => {

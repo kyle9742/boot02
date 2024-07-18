@@ -46,7 +46,7 @@ public class UpDownController {
 
                 String uuid = UUID.randomUUID().toString();
 
-                Path savePath = Paths.get(uploadPath, uuid + " " + originalName);
+                Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
 
                 boolean image = false;
 
