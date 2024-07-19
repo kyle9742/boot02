@@ -3,6 +3,7 @@ package zerock.boot02.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import zerock.boot02.domain.Board;
 import zerock.boot02.dto.*;
 import zerock.boot02.service.BoardService;
@@ -49,6 +50,7 @@ public class BoardController {
     }
 
     @GetMapping("/register")
+    @PreAuthorize("hasRole('USER')")
     public void registerGet() {
 
     }
