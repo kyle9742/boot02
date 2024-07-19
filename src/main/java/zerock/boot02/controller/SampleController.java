@@ -11,6 +11,10 @@ import java.util.List;
 @Controller
 @Log4j2
 public class SampleController {
+	@GetMapping("/")
+	public String main(){
+		return "redirect:/board/list";
+	}
 
 	@GetMapping("/hello")
 	public String hello(Model model){

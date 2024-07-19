@@ -1,4 +1,4 @@
-package zerock.boot02.repository.security;
+package zerock.boot02.security;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.User;
@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("loadUserByUsername : " + username);
 
         UserDetails userDetails = User.builder()
-                .username("user1")
+                .username("user2")
                 .password(passwordEncoder.encode("1111"))
                 .authorities("ROLE_USER")
                 .build();

@@ -12,9 +12,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import zerock.boot02.repository.security.CustomUserDetailsService;
+import zerock.boot02.security.CustomUserDetailsService;
+import zerock.boot02.security.handler.Custom403Handler;
 
 import javax.sql.DataSource;
 
@@ -44,9 +46,16 @@ public class CustomSecurityConfig {
                         .key("12345678")
                         .tokenRepository(persistentTokenRepository())
                         .userDetailsService(userDetailsService)
-                        .tokenValiditySeconds(60*60*24*30))
+                        .tokenValiditySeconds(60 * 60 * 24 * 30))
+                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler()));
         ;
+
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new Custom403Handler();
     }
 
     @Bean
