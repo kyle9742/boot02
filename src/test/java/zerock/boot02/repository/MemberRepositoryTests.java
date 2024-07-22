@@ -27,7 +27,7 @@ public class MemberRepositoryTests {
         IntStream.rangeClosed(1,100).forEach(i -> {
 
             Member member = Member.builder()
-                    .mid("member" + i)
+                    .mid("test" + i)
                     .mpw(passwordEncoder.encode("1111"))
                     .email("email" + i + "@aaa.com")
                     .build();
@@ -42,13 +42,13 @@ public class MemberRepositoryTests {
     @Test
     public void testRead() {
 
-        Optional<Member> result = memberRepository.getWithRoles("member100");
+        Optional<Member> result = memberRepository.getWithRoles("test100");
 
         Member member = result.orElse(null);
 
         log.info(member);
         log.info(member.getRoleSet());
 
-        member.getRoleSet().forEach(memberRole -> log.info(memberRole));
+        member.getRoleSet().forEach(memberRole -> log.info(memberRole.name()));
     }
 }

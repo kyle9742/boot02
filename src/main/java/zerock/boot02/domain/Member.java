@@ -32,7 +32,7 @@ public class Member extends BaseEntity {
     @Builder.Default
     private Set<MemberRole> roleSet = new HashSet<>();
 
-    private void changePassword(String mpw) {
+    public void changePassword(String mpw) {
         this.mpw = mpw;
     }
 
