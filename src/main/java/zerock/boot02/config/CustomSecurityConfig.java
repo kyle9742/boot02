@@ -47,7 +47,8 @@ public class CustomSecurityConfig {
                         .tokenRepository(persistentTokenRepository())
                         .userDetailsService(userDetailsService)
                         .tokenValiditySeconds(60 * 60 * 24 * 30))
-                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler()));
+                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler()))
+                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/member/login"))
         ;
 
         return http.build();
