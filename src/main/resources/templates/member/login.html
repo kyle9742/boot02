@@ -1,23 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <title>Simple Sidebar - Login</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body class="align-middle" >
+<body class="align-middle">
 <div class="container-fluid d-flex justify-content-center" style="height: 100vh">
 
     <div class="card align-self-center">
         <div class="card-header">
-            LOGIN Page
+            <div class="d-flex justify-content-between">
+                <div class="loginText align-content-center">
+                    LOGIN Page
+                </div>
+                <button type="button" class="btn btn-dark submitBtn" th:onclick="|window.location='@{/board/list}'|">
+                    HOME
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <th:block th:if="${param.logout != null}">
@@ -40,6 +48,9 @@
                 <div class="my-4">
                     <div class="float-end">
                         <button type="submit" class="btn btn-primary submitBtn">LOGIN</button>
+                        <button type="button" class="btn btn-secondary submitBtn"
+                                th:onclick="|window.location='@{/member/join}'|">JOIN
+                        </button>
                     </div>
                 </div>
             </form>
