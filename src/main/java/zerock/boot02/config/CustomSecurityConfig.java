@@ -55,9 +55,10 @@ public class CustomSecurityConfig {
                         .userDetailsService(userDetailsService)
                         .tokenValiditySeconds(60 * 60 * 24 * 30))
                 .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler()))
-                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/member/login")
-                        .successHandler(authenticationSuccessHandler()));
-        ;
+                .oauth2Login(oauth2Login -> oauth2Login
+                                                        .loginPage("/member/login")
+                                                        .successHandler(authenticationSuccessHandler()));
+
 
         return http.build();
     }

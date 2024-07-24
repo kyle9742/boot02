@@ -56,7 +56,7 @@ public class MemberRepositoryTests {
     public void testUpdate() {
 
         String mid = "jaewoo1993@gmail.com";
-        String mpw = passwordEncoder.encode("123456");
+        String mpw = passwordEncoder.encode("1111");
 
         memberRepository.updatePassword(mpw, mid);
     }

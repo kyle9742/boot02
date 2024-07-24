@@ -52,4 +52,28 @@ public class MemberController {
 
         return "redirect:/member/login";
     }
+
+    @GetMapping("/modify")
+    public void getModify(MemberJoinDTO memberJoinDTO) {
+
+        log.info("modify get...........");
+
+    }
+
+    @PostMapping("/modify")
+    public String modifyPost(MemberJoinDTO memberJoinDTO, RedirectAttributes redirectAttributes) {
+
+        log.info("modify post...........");
+        log.info(memberJoinDTO);
+
+        try {
+            memberService.modify(memberJoinDTO);
+        } catch (MemberService.MidExistException e) {
+
+            redirectAttributes.addFlashAttribute("error", "mid");
+            return "redirect:/member/modify";
+        }
+        return "redirect:/board/list";
+    }
+
 }
